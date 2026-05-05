@@ -38,3 +38,22 @@ here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") |>
     name_repair = to_snake_case
   )
 ```
+
+## Making a function to add numbers
+```{r}
+#' Add two numbers together.
+#'
+#' @param num1 A number here.
+#' @param num2 A number here.
+#'
+#' @returns Returns the sum of two numbers
+#'
+add_numbers <- function(num1, num2) {
+  added <- num1 + num2
+  return(added)
+}
+
+# {} are used after function() to make a function body
+# we don't necessarily need the return, but it can be good practice to make sure you get returned what you want
+# to add roxygen comment; place cursor somewhere within your function
+```
