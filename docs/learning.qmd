@@ -28,7 +28,13 @@ here("data-raw/nurses-stress/stress/5C/5C_1586886626/HR.csv.gz") |>
 # n_max: how many rows is loaded from this specific file
 ```
 
+## Exercise: Reading other files
 
 ```{r}
-# Code chunk
+# read in a few other data files
+here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") |>
+  read_csv(
+    show_col_types = FALSE,
+    name_repair = to_snake_case
+  )
 ```
