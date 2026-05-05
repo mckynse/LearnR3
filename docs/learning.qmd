@@ -9,7 +9,7 @@ format: html
 ```{r setup}
 library(tidyverse)
 library(here)
-library(snakecase)
+source(here("R/functions.R"))
 ```
 
 ## Importing new data
@@ -17,12 +17,12 @@ library(snakecase)
 # here function: tells us where we are, while telling R to go back to where the project file is located - keeping your project contained
 # new_data <- read_csv(here("data/new_data.csv"))
 
-here("data-raw/nurses-stress/stress/5C/5C_1586886626/HR.csv.gz") |>
-  read_csv(
-    show_col_types = FALSE,
-    name_repair = to_snake_case,
-    n_max = 100
-  )
+# here("data-raw/nurses-stress/stress/5C/5C_1586886626/HR.csv.gz") |>
+#   read_csv(
+#     show_col_types = FALSE,
+#     name_repair = to_snake_case,
+#     n_max = 100
+#   )
 
 # name_repair: updating column names while importing your data
 # n_max: how many rows is loaded from this specific file
@@ -31,6 +31,7 @@ here("data-raw/nurses-stress/stress/5C/5C_1586886626/HR.csv.gz") |>
 ## Exercise: Reading other files
 
 ```{r}
+#| eval: false #makes R not execute the code chunk
 # read in a few other data files
 here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") |>
   read_csv(
@@ -59,23 +60,7 @@ add_numbers <- function(num1, num2) {
 ```
 
 ```{r}
-#' Read in one nurses' stress data file.
-#'
-#' @param file_path Path to the data file
-#'
-#' @param max_rows Maximum number of rows in output
-#'
-#' @returns Outputs a data frame/tibble
-#'
-read <- function(file_path, max_rows = 100) {
-  data <- file_path |>
-    readr::read_csv(
-      show_col_types = FALSE,
-      name_repair = to_snake_case,
-      n_max = max_rows
-    )
-  return(data)
-}
+#here used to be the read() function we generated, which is now in the R/functions.R 
 # be careful not to overwrite a function. Check if a function name is taken by looking up the potential help page: ?function
 ```
 
