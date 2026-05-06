@@ -243,9 +243,45 @@ hr_data |>
 ```
 
 ## 20.6 Exercise: Convert the summarising code into a function
+
 ```{r}
 # function pasted into R/functions.R
 ```
 
+
+## 20.8 Extra exercise: Create a function to read in any HR-type dataset
+
+```{r}
+read_sensor_data <- 
+  function(filename) {
+    data <- read_all(filename) |> 
+      get_participant_id_simple() |> 
+      summarise_by_datetime()
+    return(data)
+  }
+```
+
+
+## Pivot longer
+
+```{r}
+survey_data <- here("data-raw/nurses-stress/survey-results.csv.gz") |> 
+  read()
+survey_data
+
+survey_tidy <- survey_data |> 
+  mutate(
+    date = mdy(date),
+    start_datetime = as_datetime(
+      paste(date, start_time)
+      ),
+    end_datetime = as_datetime(
+      paste(date, end_time)
+    ),
+    datetime_id = start_datetime,
+    .before = start_time
+  ) |> 
+  select(-c(date, start_time, end_time, duration))
+```
 
 
