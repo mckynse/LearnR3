@@ -9,6 +9,7 @@ format: html
 ```{r setup}
 library(tidyverse)
 library(here)
+library(fs)
 source(here("R/functions.R"))
 ```
 
@@ -60,7 +61,7 @@ add_numbers <- function(num1, num2) {
 ```
 
 ```{r}
-#here used to be the read() function we generated, which is now in the R/functions.R 
+# here used to be the read() function we generated, which is now in the R/functions.R
 # be careful not to overwrite a function. Check if a function name is taken by looking up the potential help page: ?function
 ```
 
@@ -91,3 +92,23 @@ here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") |>
 ```
 
 
+## Using map
+
+```{r}
+hr_files <- here("data-raw/nurses-stress/") |>
+  dir_ls(regexp = "HR.csv.gz", recurse = TRUE)
+
+# dir_ls lists all files in a folder
+# regexp argument = lists all files related to "HR.csv.gz" in the folder
+# recurse = TRUE, looks in all the folders within the root folder, which we listed (nurses-stress)
+
+hr_data <- hr_files |>
+  map(read) |> # NO BRACKETS!
+  list_rbind(names_to = "file_path_id")
+
+hr_data
+```
+
+Now, we'd like to add ID to the files and also combine the files into one file using combine rows - so we pipe to list_rbind() 
+
+names_to = "file_path_id" since names are automatically lost
