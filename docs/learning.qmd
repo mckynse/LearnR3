@@ -10,7 +10,7 @@ format: html
 library(tidyverse)
 library(here)
 library(fs)
-source(here("R/functions.R"))
+source(here::here("R/functions.R"))
 ```
 
 ## Importing new data
@@ -117,13 +117,7 @@ names_to = "file_path_id" since names are automatically lost
 ## 18.5 Exercise: Convert the map with reading code into a function and use on sleep
 
 ```{r}
-read_all <- function(filename) {
-  data <- here::here("data-raw/nurses-stress") |>
-    fs::dir_ls(regexp = filename, recurse = TRUE) |>
-    purrr::map(read) |> # NO BRACKETS!
-    purrr::list_rbind(names_to = "file_path_id")
-  return(data)
-}
+
 
 read_all("IBI.csv.gz")
 ```
@@ -160,27 +154,7 @@ hr_data |>
 ## Exercise 19.7: Convert 'get ID' code into a function
 
 ```{r}
-#' Extract participant ID from file_path_id
-#'
-#' @param data
-#'
-#' @returns data with ID
-#'
-get_participant_id <- function(data) {
-  data_with_id <- data |>
-    dplyr::mutate(
-      id = stringr::str_extract(
-        file_path_id,
-        pattern = "/stress/[:alnum:]{2}/"
-      ) |>
-        stringr::str_remove("/stress/") |>
-        stringr::str_remove("/"),
-      .before = file_path_id
-    ) |>
-    dplyr::select(-file_path_id)
 
-  return(data_with_id)
-}
 
 read_all("BVP.csv.gz")
 
@@ -270,6 +244,8 @@ hr_data |>
 
 ## 20.6 Exercise: Convert the summarising code into a function
 ```{r}
-
-
+# function pasted into R/functions.R
 ```
+
+
+

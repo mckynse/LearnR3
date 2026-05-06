@@ -8,8 +8,36 @@ format: html
 
 ```{r setup}
 #| include: false
+
+source(here::here("R/functions.R"))
 ```
 
 ```{r}
 # Code chunk
 ```
+
+## Prepare HR data
+
+```{r}
+hr_data <- read_all("HR.csv.gz") |>
+  get_participant_id() |> 
+  summarise_by_datetime()
+
+ibi_data <- read_all("IBI.csv.gz") |>
+  get_participant_id() |> 
+  summarise_by_datetime()
+
+temp_data <- read_all("TEMP.csv.gz") |>
+  get_participant_id() |> 
+  summarise_by_datetime()
+
+bvp_data <- read_all("BVP.csv.gz") |>
+  get_participant_id() |> 
+  summarise_by_datetime()
+
+eda_data <- read_all("EDA.csv.gz") |>
+  get_participant_id() |> 
+  summarise_by_datetime()
+```
+
+
