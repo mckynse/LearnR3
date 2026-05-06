@@ -14,3 +14,31 @@ read <- function(file_path, max_rows = 10) {
     )
   return(data)
 }
+
+#' Summarising by groups
+#'
+#' @param data
+#'
+#' @returns summarised data with mean, sd, median per minute
+#'
+summarise_by_datetime <- function(data) {
+  summarised_data <- data |>
+    dplyr::mutate(
+      collection_datetime = lubridate::round_date(
+        collection_datetime,
+        unit = "minute"
+      )
+    ) |>
+    dplyr::summarise(
+      dplyr::across(
+        where(is.numeric),
+        list(
+          mean = mean,
+          sd = sd,
+          median = median
+        )
+      ),
+      .by = c(id, collection_datetime)
+    )
+  return(summarised_data)
+}
