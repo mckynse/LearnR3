@@ -297,8 +297,39 @@ survey_tidy |>
 ```
 
 
-## 21.4 Exercise: Convert into two new functions
+## 22.4 Joining datasets
 ```{r}
+survey_long |> 
+  left_join(survey_tidy)
+# best practice is to use left_join()
 
+survey_tidy |> 
+  count(id, datetime_id) |> 
+  filter(n > 1)
+# useful if you end up having repeats of the same entries/rows (not relevant here, because the read function is limited to 10 rows - but relevant if you change this to n_max = 100)
+
+survey_long |> 
+  right_join(survey_tidy)
+# not always the case that left and right join will give the same size data set; might be smaller or larger
+
+survey_long |> 
+  full_join(survey_tidy)
+
+nrow(full_join(survey_long, survey_tidy))
 ```
+
+```{r}
+nurses_stress <- survey_long |> 
+  full_join(survey_tidy) |> 
+  full_join(hr_data)
+
+nurses_stress |> 
+  arrange(id, collection_datetime) |> 
+  view()
+
+survey_long |> 
+  full_join(survey_tidy) |> 
+  left_join(hr_data)
+```
+
 
