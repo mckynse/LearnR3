@@ -78,3 +78,26 @@ summarise_by_datetime <- function(data) {
     )
   return(summarised_data)
 }
+
+#' Tidying up dates and times
+#'
+#' @param data
+#'
+#' @returns data frame tidied by dates and times
+#'
+tidy_survey_dates <- function(data) {
+  tidied <- data |>
+    dplyr::select(id, datetime_id, start_datetime, end_datetime) |>
+    tidyr::pivot_longer(c(start_datetime, end_datetime),
+                        names_to = NULL,
+                        values_to = "collection_datetime"
+    ) |>
+    dplyr::group_by(pick(-collection_datetime)) |>
+    tidyr::complete(collection_datetime = seq(
+      min(collection_datetime),
+      max(collection_datetime),
+      by = 60
+    )) |>
+    dplyr::ungroup()
+  return(tidied)
+}
