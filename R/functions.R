@@ -87,6 +87,29 @@ summarise_by_datetime <- function(data) {
 #'
 tidy_survey_dates <- function(data) {
   tidied <- data |>
+    dplyr::mutate(
+      date = mdy(date),
+      start_datetime = as_datetime(
+        paste(date, start_time)
+      ),
+      end_datetime = as_datetime(
+        paste(date, end_time)
+      ),
+      datetime_id = start_datetime,
+      .before = start_time
+    ) |>
+    dplyr::select(-c(date, start_time, end_time, duration))
+  return(tidied)
+}
+
+#' Pivots data frame to long format by collection_datetime column
+#'
+#' @param data
+#'
+#' @returns survey data with collection_datetime in long format
+#'
+survey_to_long <- function(data) {
+  longer <- data |>
     dplyr::select(id, datetime_id, start_datetime, end_datetime) |>
     tidyr::pivot_longer(c(start_datetime, end_datetime),
                         names_to = NULL,
@@ -99,5 +122,6 @@ tidy_survey_dates <- function(data) {
       by = 60
     )) |>
     dplyr::ungroup()
-  return(tidied)
+  return(longer)
 }
+
